@@ -1,6 +1,8 @@
 
-<link rel='import' href='hash-manager-behavior.html'/>
-<link rel='import' href='forward-back-animation-behavior.html'/>
+<link rel='import' href='__hash-manager-behavior.html'/>
+<link rel='import' href='__forward-back-animation-behavior.html'/>
+
+<link rel='import' href='../__pg-styles.html'/>
 
 <script>
 	
@@ -37,8 +39,10 @@
 		ready: function() {
 			this.toggleClass(this.class);
 			if (this.default && !this.selected) this.selected = this.default;
-			this.selectedPageLink = this.findHash(this.selected, this.getPageLinks());
-			this.onHashChange(); // Check the url, in case the page isn't default.
+			this.async(function(){
+				this.selectedPageLink = this.findHash(this.selected, this.getPageLinks());
+				this.onHashChange(); // Check the url, in case the page isn't default.
+			});
 		},
 
 		pageChanged: function(evt) {

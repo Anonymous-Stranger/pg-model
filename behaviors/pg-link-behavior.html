@@ -21,6 +21,7 @@
 
 		ready: function() {
 			this.toggleClass(this.class);
+			this.toggleSelected();
 		},
 
 		toggleSelected: function() {
@@ -31,7 +32,7 @@
 			this.fire(PageModel.PGModelBehaviorImpl.pageChangedEvent, this.hash);
 		},
 
-		class: "model-page-link"
+		class: "pg-link"
 	};
 
 </script>
