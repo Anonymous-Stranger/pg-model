@@ -1,0 +1,32 @@
+{
+  "name": "pg-model",
+  "version": "1.2.0",
+  "authors": [
+    "Akash Gaonkar <akashgaonkar@gmail.com>"
+  ],
+  "description": "A Polymer-based SPA page model.",
+  "main": "headed-page-model.html",
+  "keywords": [
+    "Polymer",
+    "Single",
+    "Page",
+    "Application",
+    "SPA"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "../",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#~1.0.3",
+    "neon-animation": "PolymerElements/neon-animation#~1.0.1",
+    "paper-header-panel": "PolymerElements/paper-header-panel#~1.0.2",
+    "paper-toolbar": "PolymerElements/paper-toolbar#~1.0.2"
+  },
+  "homepage": "https://github.com/Anonymous-Stranger/page-model"
+}

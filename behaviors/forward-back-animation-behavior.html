@@ -1,0 +1,46 @@
+
+<script>
+	
+	var PageModel = PageModel ? PageModel : {};
+
+	PageModel.ForwardBackAnimationBehavior = {
+		properties: {
+			backEntryAnimation: {
+				type: String,
+				value: "slide-from-left-animation"
+			},
+			backExitAnimation: {
+				type: String,
+				value: "slide-right-animation"
+			},
+			forwardEntryAnimation: {
+				type: String,
+				value: "slide-from-right-animation"
+			},
+			forwardExitAnimation: {	
+				type: String,
+				value: "slide-left-animation"
+			},
+			entryAnimation: {
+				type: String
+			},
+			exitAnimation: {
+				type: String
+			}
+		},
+
+		prepBackAnimation: function() {
+		/* Set up to animate going to a previous page. */
+			this.entryAnimation = this.backEntryAnimation;
+			this.exitAnimation = this.backExitAnimation;
+		},
+
+		prepForwardAnimation: function() {
+		/* Set up to animate going to a later page. */
+			this.entryAnimation = this.forwardEntryAnimation;
+			this.exitAnimation = this.forwardExitAnimation;
+		}
+		
+	};
+
+</script>

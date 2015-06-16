@@ -1,0 +1,134 @@
+
+<link rel='import' href='hash-manager-behavior.html'/>
+<link rel='import' href='forward-back-animation-behavior.html'/>
+
+<script>
+	
+	var PageModel = PageModel ? PageModel : {};
+
+	PageModel.PGModelBehaviorImpl = {
+
+		properties: {
+			default: {
+				type: String
+			},
+			selected: {
+				type: String,
+			},
+			selectedPageLink: {
+				type: Object
+			},
+			attrForSelected: {
+				type: String,
+				value: "hash"
+			},
+			selectedAttribute: {
+				type: String,
+				value: "selected"
+			}
+		},
+
+		listeners: {
+			"pg-model-page-changed": "pageChanged"
+		},
+
+		pageChangedEvent: "pg-model-page-changed",
+
+		ready: function() {
+			this.toggleClass(this.class);
+			if (this.default && !this.selected) this.selected = this.default;
+			this.selectedPageLink = this.findHash(this.selected, this.getPageLinks());
+			this.onHashChange(); // Check the url, in case the page isn't default.
+		},
+
+		pageChanged: function(evt) {
+		/* Updates the view and the url when the selected page changes. */
+			var fullHash = (evt.detail == "") ? this.default : evt.detail;
+
+			// Split the full hash into a hash and a query string.
+			var hashComponents = fullHash.split('?');
+			var hash = hashComponents.shift(), qString = hashComponents.join("?");
+
+			// Find the selected page, and the new page.
+			var pages = this.getPages();
+			var selectedIndex = this.findHashIndex(this.selected, pages);
+			var nextIndex = this.findHashIndex(hash, pages);
+			
+			// Animate to the new page.
+			if (nextIndex < selectedIndex) this.prepBackAnimation();
+			else if (nextIndex > selectedIndex) this.prepForwardAnimation();
+			this.selected = hash;
+
+			// Update the page link from the old to the new.
+			if (this.selectedPageLink) this.selectedPageLink.selected = false;
+			this.selectedPageLink = this.findHash(fullHash, this.getPageLinks());
+			if (this.selectedPageLink) this.selectedPageLink.selected = true;
+
+			// Asynchronously update the query in the selected page.
+			this.async(function(){
+				item = document.querySelector("neon-animated-pages > .iron-selected");
+				if(item) item.qString = qString;
+			});
+
+			// Update the url, stop the event from bubbling up further.
+			this.setHash(fullHash);
+			evt.stopPropagation();
+		},
+
+		prevPage: function() {
+		/* Go to the previous page BASED ON LINKS, NOT PAGES. */
+			this.shiftNPages(-1);
+		},
+
+		nextPage: function() {
+		/* Go to the next page BASED ON LINKS, NOT PAGES. */
+			this.shiftNPages(1);
+		},
+
+		shiftNPages: function(n) {
+		/* Increase or decrease the selected page by n, BASED ON LINKS, NOT PAGES. */
+			var pageLinks = this.getPageLinks();
+			if (!this.selectedPageLink) this.selectedPageLink = this.findHash(this.selected, pageLinks);
+
+			var i = this.findHashIndex(this.selectedPageLink.hash, pageLinks);
+
+			i = i + n;
+			if (i >= 0 && i < pageLinks.length) pageLinks[i].fire("tap");
+		},
+
+		getPages: function() {
+		/* Returns an array of all pages. */
+			return Polymer.dom(this).querySelectorAll("."+PageModel.PGPageBehaviorImpl.class);
+		},
+
+		getPageLinks: function() {
+		/* Returns an array of all page links. */
+			return Polymer.dom(this).querySelectorAll("."+PageModel.PGLinkBehavior.class);
+		},
+
+		onHashChange: function() {
+		/* Fetches the new hash, and tells the page model to update. */
+			var hash = this.getHash(location.href);
+			this.fire(this.pageChangedEvent, hash);
+		},
+
+		class: "pg-model"
+
+	};
+
+	PageModel.PGModelBehavior = [PageModel.HashManagerBehavior, PageModel.ForwardBackAnimationBehavior, PageModel.PGModelBehaviorImpl];
+
+	// Add a listener to check if the url changes. Updates the page model if it does.
+	var lastURL = location.href;
+	window.setInterval(function(){
+	    
+	    // If url hasn't changed, don't worry.
+	    if (lastURL == location.href) return;
+
+	    // Otherwise, tell the page model the url has changed.
+	    Polymer.dom(document).querySelector("."+PageModel.PGModelBehaviorImpl.class).onHashChange();
+	    lastURL = location.href;
+
+	}, 100);
+
+</script>

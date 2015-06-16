@@ -1,0 +1,17 @@
+
+<link rel='import' href="../polymer/polymer.html"/>
+
+<link rel='import' href='behaviors/pg-page-behavior.html'/>
+
+<dom-module id='pg-page'>
+	<template class='fit'>
+		<content></content>
+	</template>
+
+	<script>
+	Polymer({
+		is: "pg-page",
+		behaviors: [PageModel.PGPageBehavior]
+	});
+	</script>
+</dom-module>

@@ -1,0 +1,37 @@
+
+<script>
+	
+	var PageModel = PageModel ? PageModel : {};
+
+	PageModel.PGLinkBehavior = {
+		properties: {
+			hash: {
+				type: String
+			},
+			selected: {
+				type: Boolean,
+				value: false,
+				observer: 'toggleSelected'
+			}
+		},
+
+		listeners: {
+			'tap': 'notifyPageModel'
+		},
+
+		ready: function() {
+			this.toggleClass(this.class);
+		},
+
+		toggleSelected: function() {
+			this.toggleClass('selected', this.selected);
+		},
+
+		notifyPageModel: function(evt) {
+			this.fire(PageModel.PGModelBehaviorImpl.pageChangedEvent, this.hash);
+		},
+
+		class: "model-page-link"
+	};
+
+</script>

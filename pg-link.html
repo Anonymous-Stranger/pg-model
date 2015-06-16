@@ -1,0 +1,25 @@
+
+<link rel='import' href='../polymer/polymer.html'/>
+
+<link rel='import' href='behaviors/pg-link-behavior.html'/>
+
+<dom-module id='pg-link'>
+	
+	<style>
+		:host ::content {
+			cursor: pointer;
+		}
+	</style>
+
+	<template>
+		<content></content>
+	</template>
+
+	<script>
+		Polymer({
+			is: "pg-link",
+			behaviors: [PageModel.PGLinkBehavior]
+		});
+	</script>
+
+</dom-module>

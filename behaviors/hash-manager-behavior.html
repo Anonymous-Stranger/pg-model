@@ -1,0 +1,43 @@
+
+<script>
+	
+	var PageModel = PageModel ? PageModel : {};
+
+	PageModel.HashManagerBehavior = {
+		properties: {
+			hashSymbol: {
+				type: String,
+				value: "#!/"
+			}
+		},
+
+		findHash: function(hash, items) {
+		/* Returns the item in a list with a given hash. */
+			for (var i = 0; i < items.length; i++) {
+				if (items[i].hash == hash) return items[i];
+			}
+			return null;
+		},
+
+		findHashIndex: function(hash, items) {
+		/* Returns the index of the item in a list with a given hash. */
+			for (var i = 0; i < items.length; i++) {
+				if (items[i].hash == hash) return i;
+			}
+			return -1;
+		},
+
+		getHash: function(url) {
+		/* Returns the hash based on a url. */
+			var components = url.split(this.hashSymbol);
+			return (components.length < 2) ? "" : components.pop();
+		},
+
+		setHash: function(hash) {
+		/* Updates the hash on a url. (www.example.com/.../#--updated hash--) */
+			var base_url = location.href.split(this.hashSymbol).shift();
+			location.href = base_url + this.hashSymbol + hash;
+		}
+	};
+
+</script>
