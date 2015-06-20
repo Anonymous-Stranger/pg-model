@@ -1,17 +1,19 @@
 {
   "name": "pg-model",
-  "version": "1.2.4",
+  "version": "1.2.6",
   "authors": [
     "Akash Gaonkar <akashgaonkar@gmail.com>"
   ],
   "description": "A Polymer-based SPA page model.",
   "main": "headed-page-model.html",
   "keywords": [
+    "pg-model",
     "Polymer",
     "Single",
     "Page",
     "Application",
-    "SPA"
+    "SPA",
+    "web-components"
   ],
   "license": "MIT",
   "ignore": [
